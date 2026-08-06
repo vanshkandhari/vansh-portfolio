@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vansh Kandhari — Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF2F6;
+    --surface: #FFFFFF;
+    --ink: #14213D;
+    --ink-soft: #4B5768;
+    --amber: #C97A1F;
+    --amber-bg: #FBEEDC;
+    --teal: #14746F;
+    --teal-bg: #E3F1EF;
+    --line: #D7DEE6;
+    --radius: 14px;
+    --max: 980px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+  h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; margin: 0; color: var(--ink); }
+
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+
+  a { color: inherit; }
+
+  ::selection { background: var(--amber-bg); color: var(--ink); }
+
+  :focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ---------- NAV ---------- */
+  header.nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(238, 242, 246, 0.88);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+  }
+  .nav-inner .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+  }
+  .nav-inner .logo span { color: var(--amber); }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    transition: color 0.15s ease;
+  }
+  .nav-links a:hover { color: var(--teal); }
+  .nav-cta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 8px 16px;
+    border-radius: 999px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--teal); }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero { padding: 88px 0 64px; }
+  .prompt-line {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--teal);
+    font-size: 0.92rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .prompt-line .dot { color: var(--amber); }
+
+  .query-block {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    box-shadow: 0 1px 2px rgba(20, 33, 61, 0.04);
+  }
+
+  .query-code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+  .kw { color: var(--amber); font-weight: 600; }
+  .fn { color: var(--teal); }
+  .str { color: #8A4B08; }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1.05em;
+    background: var(--amber);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: blink 1s steps(1) infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cursor { animation: none; }
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .result-table {
+    margin-top: 20px;
+    border-top: 1px dashed var(--line);
+    padding-top: 18px;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    row-gap: 10px;
+    column-gap: 28px;
+    font-size: 0.95rem;
+  }
+  .result-table dt {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+    align-self: start;
+    padding-top: 2px;
+  }
+  .result-table dd { margin: 0; font-weight: 500; }
+  .result-table .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    background: var(--teal-bg);
+    color: var(--teal);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+  .status-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    background: var(--amber-bg);
+    color: var(--amber);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  .hero-ctas { margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.88rem;
+    text-decoration: none;
+    padding: 11px 20px;
+    border-radius: 999px;
+    display: inline-block;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-primary { background: var(--ink); color: var(--bg); }
+  .btn-primary:hover { background: var(--teal); transform: translateY(-1px); }
+  .btn-secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
+
+  /* ---------- STAT STRIP ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 8px 0 76px;
+  }
+  .stat {
+    background: var(--surface);
+    padding: 22px 18px;
+    text-align: center;
+  }
+  .stat .num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .stat .cap {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  @media (max-width: 700px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ---------- SECTION LABEL ---------- */
+  .section { padding: 60px 0; border-top: 1px solid var(--line); }
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--amber);
+    font-size: 0.88rem;
+    margin-bottom: 6px;
+  }
+  .section-title { font-size: 1.55rem; margin-bottom: 32px; }
+
+  /* ---------- SKILLS ---------- */
+  .schema {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .schema-row {
+    background: var(--surface);
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 18px;
+    padding: 16px 22px;
+    align-items: baseline;
+  }
+  .schema-row .table-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+  }
+  .schema-row .table-name b { color: var(--teal); font-weight: 600; }
+  .schema-row .fields { display: flex; flex-wrap: wrap; gap: 8px; }
+  .field-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+  @media (max-width: 640px) {
+    .schema-row { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 20px;
+  }
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .project-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(20, 33, 61, 0.08);
+    border-color: var(--teal);
+  }
+  .project-thumb {
+    aspect-ratio: 16 / 10;
+    background: var(--bg);
+    overflow: hidden;
+  }
+  .project-thumb img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .project-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
+  .project-tool {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+  .project-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.05rem; margin-bottom: 8px; }
+  .project-desc { font-size: 0.9rem; color: var(--ink-soft); flex: 1; }
+  .project-link {
+    margin-top: 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--ink);
+  }
+  .project-card:hover .project-link { color: var(--teal); }
+
+  /* ---------- EXPERIENCE ---------- */
+  .exp-item {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 24px;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+  }
+  .exp-item:first-of-type { border-top: none; }
+  .exp-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    padding-top: 2px;
+  }
+  .exp-role { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.1rem; margin-bottom: 2px; }
+  .exp-org { font-size: 0.9rem; color: var(--ink-soft); margin-bottom: 12px; }
+  .exp-list { margin: 0; padding-left: 18px; font-size: 0.92rem; }
+  .exp-list li { margin-bottom: 8px; }
+  .exp-list li::marker { color: var(--amber); }
+  @media (max-width: 640px) {
+    .exp-item { grid-template-columns: 1fr; gap: 6px; }
+  }
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer { padding: 70px 0 50px; border-top: 1px solid var(--line); }
+  .connect-block {
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: var(--radius);
+    padding: 34px 30px;
+  }
+  .connect-code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.95rem;
+    line-height: 1.9;
+  }
+  .connect-code .kw2 { color: #E8A33D; }
+  .connect-code a {
+    color: #9FD8D3;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(159, 216, 211, 0.35);
+  }
+  .connect-code a:hover { border-color: #9FD8D3; }
+  .footer-note {
+    margin-top: 26px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="logo">VK<span>.</span></div>
+    <ul class="nav-links">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="nav-cta" href="mailto:vanshkandhari1@gmail.com">Say hello</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="prompt-line"><span class="dot">●</span> analytics_console — connected</div>
+    <div class="query-block">
+      <div class="query-code"><span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="fn">analysts</span> <span class="kw">WHERE</span> name <span class="kw">=</span> <span class="str">'Vansh Kandhari'</span>;<span class="cursor"></span></div>
+      <dl class="result-table">
+        <dt>role</dt>
+        <dd>Data Analyst</dd>
+        <dt>experience</dt>
+        <dd>3.9 years — SQL, Python, Power BI, cloud analytics</dd>
+        <dt>based_in</dt>
+        <dd>New Delhi, India</dd>
+        <dt>stack</dt>
+        <dd class="tags">
+          <span class="tag">SQL</span>
+          <span class="tag">Python</span>
+          <span class="tag">Power BI</span>
+          <span class="tag">Tableau</span>
+          <span class="tag">AWS</span>
+        </dd>
+        <dt>status</dt>
+        <dd><span class="status-tag">open to opportunities</span></dd>
+      </dl>
+    </div>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#projects">View projects →</a>
+      <a class="btn btn-secondary" href="#contact">Get in touch</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="num">1M+</div><div class="cap">records analyzed</div></div>
+    <div class="stat"><div class="num">70%</div><div class="cap">faster reporting</div></div>
+    <div class="stat"><div class="num">45%</div><div class="cap">better data reliability</div></div>
+    <div class="stat"><div class="num">30%</div><div class="cap">fewer discrepancies</div></div>
+  </div>
+
+  <!-- SKILLS -->
+  <section class="section" id="skills">
+    <div class="section-label">-- schema: skills</div>
+    <h2 class="section-title">What I work with</h2>
+    <div class="schema">
+      <div class="schema-row">
+        <div class="table-name"><b>TABLE</b> query_languages</div>
+        <div class="fields">
+          <span class="field-tag">SQL</span>
+          <span class="field-tag">Python (Pandas)</span>
+        </div>
+      </div>
+      <div class="schema-row">
+        <div class="table-name"><b>TABLE</b> visualization</div>
+        <div class="fields">
+          <span class="field-tag">Power BI (DAX)</span>
+          <span class="field-tag">Tableau</span>
+          <span class="field-tag">Informatica</span>
+        </div>
+      </div>
+      <div class="schema-row">
+        <div class="table-name"><b>TABLE</b> cloud_platforms</div>
+        <div class="fields">
+          <span class="field-tag">AWS (S3, Athena, Glue)</span>
+          <span class="field-tag">BigQuery</span>
+          <span class="field-tag">Databricks</span>
+        </div>
+      </div>
+      <div class="schema-row">
+        <div class="table-name"><b>TABLE</b> databases_env</div>
+        <div class="fields">
+          <span class="field-tag">Oracle</span>
+          <span class="field-tag">MySQL</span>
+          <span class="field-tag">Unix/Linux</span>
+          <span class="field-tag">Advanced Excel</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section" id="projects">
+    <div class="section-label">-- projects</div>
+    <h2 class="section-title">Selected work</h2>
+    <div class="project-grid">
+
+      <a class="project-card" href="https://github.com/vanshkandhari/PortfolioProject/blob/main/Data%20Cleaning%20Queries.sql" target="_blank" rel="noopener">
+        <div class="project-thumb"><img src="https://vanshkandhari.github.io/vansh-portfolio/images/housing.jpg" alt="Data cleaning project thumbnail" loading="lazy"></div>
+        <div class="project-body">
+          <div class="project-tool">SQL Server</div>
+          <div class="project-title">Data Cleaning in SQL</div>
+          <div class="project-desc">Cleaned and transformed a housing dataset to improve data quality and prepare it for analysis.</div>
+          <div class="project-link">View project →</div>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://github.com/vanshkandhari/PortfolioProject/blob/main/Portfolio%20Project%20Sql%20Scripts.sql" target="_blank" rel="noopener">
+        <div class="project-thumb"><img src="https://vanshkandhari.github.io/vansh-portfolio/images/covid.jpg" alt="COVID data exploration thumbnail" loading="lazy"></div>
+        <div class="project-body">
+          <div class="project-tool">SQL</div>
+          <div class="project-title">Data Exploration &amp; Analysis</div>
+          <div class="project-desc">Explored COVID-19 data using SQL to uncover trends, patterns, and key insights.</div>
+          <div class="project-link">View project →</div>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://github.com/vanshkandhari/PortfolioProject/blob/main/Amazon%20Web%20Scraper%20Project.ipynb" target="_blank" rel="noopener">
+        <div class="project-thumb"><img src="https://vanshkandhari.github.io/vansh-portfolio/images/Amazon.png" alt="Amazon web scraper thumbnail" loading="lazy"></div>
+        <div class="project-body">
+          <div class="project-tool">Python · BeautifulSoup</div>
+          <div class="project-title">Amazon Web Scraper</div>
+          <div class="project-desc">Built a Python web scraper to extract product data from Amazon listings.</div>
+          <div class="project-link">View project →</div>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://github.com/vanshkandhari/PowerBI-Adventureworks-Sales-Dashboard" target="_blank" rel="noopener">
+        <div class="project-thumb"><img src="https://vanshkandhari.github.io/vansh-portfolio/images/powerbi.jpg" alt="Power BI dashboard thumbnail" loading="lazy"></div>
+        <div class="project-body">
+          <div class="project-tool">Power BI</div>
+          <div class="project-title">AdventureWorks Sales Dashboard</div>
+          <div class="project-desc">Interactive dashboard analyzing sales performance, profitability, orders, and return rates.</div>
+          <div class="project-link">View project →</div>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://public.tableau.com/app/profile/vansh.kandhari/vizzes" target="_blank" rel="noopener">
+        <div class="project-thumb"><img src="https://vanshkandhari.github.io/vansh-portfolio/images/Tableau.png" alt="Tableau dashboards thumbnail" loading="lazy"></div>
+        <div class="project-body">
+          <div class="project-tool">Tableau</div>
+          <div class="project-title">Interactive Tableau Dashboards</div>
+          <div class="project-desc">A set of dashboards visualizing business data to deliver actionable insights.</div>
+          <div class="project-link">View project →</div>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://github.com/vanshkandhari/Job_Market_Analytics_Project" target="_blank" rel="noopener">
+        <div class="project-thumb"><img src="https://vanshkandhari.github.io/vansh-portfolio/images/job.jpg" alt="Job market analytics thumbnail" loading="lazy"></div>
+        <div class="project-body">
+          <div class="project-tool">Python · SQL · BigQuery</div>
+          <div class="project-title">Job Market Analytics</div>
+          <div class="project-desc">End-to-end analysis of the job market to identify trends and opportunities, with 20+ validation rules improving dataset reliability by 45%.</div>
+          <div class="project-link">View project →</div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience">
+    <div class="section-label">-- experience</div>
+    <h2 class="section-title">Where I've worked</h2>
+
+    <div class="exp-item">
+      <div class="exp-date">Nov 2022 — Present</div>
+      <div>
+        <div class="exp-role">Data Analyst</div>
+        <div class="exp-org">Tata Consultancy Services (TCS) · Financial Services</div>
+        <ul class="exp-list">
+          <li>Automated an end-to-end reporting pipeline processing 1M+ transactions using SQL, Power BI, and AWS (S3, Athena, Glue), cutting reporting turnaround time by 70%.</li>
+          <li>Owned a data validation and reconciliation framework across multiple source systems, reducing data discrepancies by 30%.</li>
+          <li>Built and maintained production-grade Power BI dashboards, improving decision-making speed by 30% and reducing manual analysis.</li>
+          <li>Optimized complex SQL queries and stored procedures, cutting execution time by 40%.</li>
+          <li>Migrated recurring Excel-based reports to self-serve Power BI dashboards, cutting down repetitive manual requests from business teams.</li>
+          <li>Documented data definitions and reporting logic so dashboards stayed usable and consistent as the team and stakeholder base grew.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <footer id="contact">
+    <div class="section-label">-- contact</div>
+    <h2 class="section-title">Let's connect</h2>
+    <div class="connect-block">
+      <div class="connect-code">
+        <span class="kw2">function</span> connect() {<br>
+        &nbsp;&nbsp;email: <a href="mailto:vanshkandhari1@gmail.com">vanshkandhari1@gmail.com</a>,<br>
+        &nbsp;&nbsp;phone: <a href="tel:+919310424397">+91 93104 24397</a>,<br>
+        &nbsp;&nbsp;linkedin: <a href="https://www.linkedin.com/in/vansh-kandhari-2305301b2" target="_blank" rel="noopener">/in/vansh-kandhari</a>,<br>
+        &nbsp;&nbsp;github: <a href="https://github.com/vanshkandhari" target="_blank" rel="noopener">@vanshkandhari</a>,<br>
+        &nbsp;&nbsp;location: <span style="color:#C7D2DE">'New Delhi, India'</span><br>
+        }
+      </div>
+    </div>
+    <div class="footer-note">© Vansh Kandhari — built with SQL on the brain</div>
+  </footer>
+
+</main>
+
+</body>
+</html>
